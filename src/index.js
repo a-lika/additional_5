@@ -1,48 +1,35 @@
 module.exports = function check(str, bracketsConfig) {
-  // your solution
-var brackets_str = '';
-brackets_str = brackets_str.concat(str);
-brackets_str = brackets_str.concat(bracketsConfig);
+	let brackets = '';
+	brackets = brackets.concat(str).concat(bracketsConfig);
+	brackets = brackets.replace(/,/g, "");
 
-var brackets_str = brackets_str.replace(/,/g,"");
-
-function isCorrect(brackets) {
-	var br = "(){}[]123456";
-	var st = [];
-	for (var i = 0; i < brackets.length; ++i) {
-	var ch = brackets[i];
-	var last_br;
-	if(br.indexOf(ch)!=-1){
-	var ind = br.indexOf(ch);
-
-	if (ind % 2 != 0) {
-		if (!st.length) {
-			return false;
-		} 
-		else {
-			last_br = st[st.length-1];
-			if (last_br != br[ind - 1]) {
-				return false;
-			} 
+	function isCorrect(brackets) {
+		const braketsVariety = "(){}[]123456";
+		const stack = [];
+		for (let i = 0; i < brackets.length; ++i) {
+			let even = brackets[i];
+			let lastBraket;
+			if (braketsVariety.indexOf(even) != -1) {
+				let index = braketsVariety.indexOf(even);
+				if (index % 2 != 0) {
+					if (!stack.length) {
+						return false;
+					}
+					else {
+						lastBraket = stack[stack.length - 1];
+						lastBraket != braketsVariety[index - 1] ? false : stack.splice(-1, 1);
+					}
+				}
+				else {
+					stack.push(even);
+				}
+			}
 			else {
-				st.splice(-1,1);
+				lastBraket = stack[stack.length - 1];
+				lastBraket != even ? stack.push(even) : stack.splice(-1, 1);
 			}
 		}
-	} 
-	else { 
-		  st.push(ch);
-		             }
-	}	
-	else{
-		last_br = st[st.length-1];
-	    if (last_br != ch) 
-		{st.push(ch);} 
-		else {st.splice(-1,1);}		
-	}			
-    }
-	  return !st.length;
-}		
-	return isCorrect(brackets_str)
-}
-  
-
+		return !stack.length;
+	}
+	return isCorrect(brackets);
+};
